@@ -1,10 +1,8 @@
 package hanson;
 
 import java.time.DayOfWeek;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class Week {
@@ -50,7 +48,10 @@ public class Week {
 	}
 
 	public String toString() {
-		String header = "\nV"+n+" ("+workouts.stream().mapToInt(Workout::distance).sum()+" km):\n";
+		double minKM = 0.001*workouts.stream().mapToInt(Workout::minDistance).sum();
+		double maxKM = 0.001*workouts.stream().mapToInt(Workout::maxDistance).sum();
+		String howlong = (minKM!=maxKM) ? String.format("%.1f-%.1f", minKM,maxKM):String.format("%.1f", minKM);
+		String header = "\nV"+n+" ("+howlong+" km):\n";
 		String content = workouts.stream().map(Workout::toString).collect(Collectors.joining("\n"));
 		return header +content;
 	}

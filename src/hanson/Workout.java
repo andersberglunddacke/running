@@ -11,7 +11,6 @@ public class Workout {
 
 	private DayOfWeek dayOfWeek;
 	private List<WorkoutStep> workoutSteps = new ArrayList<WorkoutStep>();
-private int distance = 0;
 
 	public Workout(Week week, DayOfWeek dayOfWeek) {
 		week.add(this);
@@ -24,9 +23,8 @@ private int distance = 0;
 	}
 
 	public Workout easyMiles(int miles) {
-		int km = (int)Math.round(miles*1.609433);
-		distance += km;
-		workoutSteps.add(new WorkoutStep(String.format("Easy %d km",km)));
+		int m = mi2m(miles);
+		workoutSteps.add(new WorkoutStep(String.format("Easy %.1f km",m*0.001), m));
 		return this;
 	}
 
@@ -36,7 +34,12 @@ private int distance = 0;
 	}
 	
 	public String toString() {
-		return dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())+": "+workoutSteps.stream().map(WorkoutStep::toString).collect(Collectors.joining(", "));
+		double minKM = 0.001*workoutSteps.stream().mapToInt(WorkoutStep::minDistance).sum();
+		double maxKM = 0.001*workoutSteps.stream().mapToInt(WorkoutStep::maxDistance).sum();
+		String howlong = (minKM!=maxKM) ? String.format("%.1f-%.1f", minKM,maxKM):String.format("%.1f", minKM);
+		String dow = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault());
+		String desc = workoutSteps.stream().map(WorkoutStep::toString).collect(Collectors.joining(", "));
+		return String.format("%s: %s (%s km)",dow,desc,howlong);
 	}
 
 	public Workout ls() {
@@ -44,12 +47,57 @@ private int distance = 0;
 		return this;
 	}
 	
-	public int distance() {
-		return distance;
+	public int minDistance() {
+		return workoutSteps.stream().mapToInt(WorkoutStep::minDistance).sum();
+	}
+	public int maxDistance() {
+		return  workoutSteps.stream().mapToInt(WorkoutStep::maxDistance).sum();
 	}
 
 	public Workout bwm() {
 		workoutSteps.add(new WorkoutStep("BWM"));		
+		return this;
+	}
+
+	public Workout wu() {
+		workoutSteps.add(new WorkoutStep("WU 2-5 km",2000,5000));	
+		return this;
+	}
+
+	public Workout dwu2() {
+		workoutSteps.add(new WorkoutStep("DWU2"));	
+		return this;
+	}
+
+	public Workout speedMeters(int n, int active , int recovery) {
+		int distance = (n*active+(n-1)*recovery);
+		workoutSteps.add(new WorkoutStep(String.format("%dx%dm m %dm joggvila", n,active,recovery),distance));
+		return this;
+	}
+
+	public Workout cd() {
+		workoutSteps.add(new WorkoutStep("CD 2-5 km",2000,5000));	
+		return this;
+	}
+
+	public Workout tempoMiles(int miles) {
+		int m = mi2m(miles);
+		workoutSteps.add(new WorkoutStep(String.format("Tempo %.1f km",m*0.001),m));
+		return this;
+	}
+	
+	public Workout longMiles(int miles) {
+		int m = mi2m(miles);
+		workoutSteps.add(new WorkoutStep(String.format("Long %.1f km",m*0.001),m));
+		return this;
+	}
+
+	private int mi2m(int miles) {
+		return (int)Math.round(miles*1609.433);
+	}
+
+	public Workout rt() {
+		workoutSteps.add(new WorkoutStep("RT"));	
 		return this;
 	}
 }
