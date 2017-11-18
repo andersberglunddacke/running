@@ -61,6 +61,36 @@ public class BeginnersProgram {
 			week.sat().dwu1().easyMiles(6).bwm().lsflex();
 			week.sun().dwu1().longMiles(10).lsflex();
 		}
+		{
+			Week week = program.week(8);
+			week.mon().dwu1().easyMiles(6).bwm().lsflex();
+			week.tue().dwu1().wu().dwu2().speedMeters(6,800,400).cd();
+			week.wed().dwu1().rt().lsflex();
+			week.thu().dwu1().wu().dwu2().tempoMiles(5).cd();
+			week.fri().dwu1().easyMiles(5).bwm().lsflex();
+			week.sat().dwu1().easyMiles(6).bwm().lsflex();
+			week.sun().dwu1().longMiles(10).lsflex();
+		}
+		{
+			Week week = program.week(9);
+			week.mon().dwu1().easyMiles(5).bwm().lsflex();
+			week.tue().dwu1().wu().dwu2().speedMeters(5,1000,400).cd();
+			week.wed().dwu1().rt().lsflex();
+			week.thu().dwu1().wu().dwu2().tempoMiles(8).cd();
+			week.fri().dwu1().easyMiles(6).bwm().lsflex();
+			week.sat().dwu1().easyMiles(5).bwm().lsflex();
+			week.sun().dwu1().longMiles(15).ls();
+		}
+		{
+			Week week = program.week(10);
+			week.mon().dwu1().easyMiles(7).bwm().lsflex();
+			week.tue().dwu1().wu().dwu2().speedMeters(4,1200,400).cd();
+			week.wed().dwu1().rt().ls();
+			week.thu().dwu1().wu().dwu2().tempoMiles(8).cd();
+			week.fri().dwu1().easyMiles(5).bwm().lsflex();
+			week.sat().dwu1().easyMiles(8).bwm().lsflex();
+			week.sun().dwu1().longMiles(10).ls();
+		}
 		System.out.println(program.toString());
 	}
 }
