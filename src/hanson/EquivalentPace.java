@@ -75,7 +75,7 @@ public class EquivalentPace {
 	}
 
 	private String pace(int i) {
-		return String.format("%02d:%02d min/km", i / 60, i % 60);
+		return String.format("%02d:%02d", i / 60, i % 60);
 	}
 
 	public int getMarathonSecs() {

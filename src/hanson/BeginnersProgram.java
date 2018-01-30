@@ -177,5 +177,7 @@ public class BeginnersProgram {
 		
 		program.programEnd(LocalDate.of(2018, 5, 13));
 		System.out.println(program.toString());
+		
+		program.asExcel("program.xlsx");
 	}
 }

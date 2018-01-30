@@ -2,9 +2,17 @@ package hanson;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 public class Week {
 
@@ -70,5 +78,34 @@ public class Week {
 	
 	public LocalDate getStart() {
 		return this.date;
+	}
+
+	public void generateExcelRow(Workbook wb, Sheet sheet, Row row) {
+		CellStyle cs = wb.createCellStyle();
+		cs.setWrapText(true);
+		
+		WeekFields weekFields = WeekFields.of(Locale.getDefault()); 
+		int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
+		row.createCell(0).setCellValue("V"+weekNumber);
+		
+		int height = 1;
+		for(DayOfWeek dow:DayOfWeek.values()) {
+			Cell dayCell = row.createCell(dow.getValue());
+			for(Workout workout:workouts) {
+				if (workout.getDayOfWeek()==dow) {
+					String text = workout.toExcelCell();
+
+					dayCell.setCellValue(text);
+					dayCell.setCellStyle(cs);
+					
+					height = Math.max(height, text.split("\n").length);
+
+				}
+			}
+		}
+		
+		
+		//increase row height to accomodate two lines of text
+		row.setHeightInPoints((height * sheet.getDefaultRowHeightInPoints()));
 	}
 }
