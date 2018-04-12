@@ -73,7 +73,9 @@ public class Program {
 			row = sheet.createRow(rowIx++);
 			week.generateExcelRow(wb,sheet,row);	
 		}
-		
+		for(DayOfWeek dow:DayOfWeek.values()) {
+             sheet.autoSizeColumn(dow.getValue());
+		}
 		try {
 			FileOutputStream fileOut = new FileOutputStream(outFile);
 			wb.write(fileOut);

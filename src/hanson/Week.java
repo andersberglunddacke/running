@@ -60,12 +60,17 @@ public class Week {
 	}
 
 	public String toString() {
-		double minKM = 0.001 * workouts.stream().mapToInt(Workout::minDistance).sum();
-		double maxKM = 0.001 * workouts.stream().mapToInt(Workout::maxDistance).sum();
-		String howlong = (minKM != maxKM) ? String.format("%.1f-%.1f", minKM, maxKM) : String.format("%.1f", minKM);
+		String howlong = getHowLong();
 		String header = "\nV" + n + " "+date+" (" + howlong + " km):\n";
 		String content = workouts.stream().map(Workout::toString).collect(Collectors.joining("\n"));
 		return header + content;
+	}
+
+	private String getHowLong() {
+		double minKM = 0.001 * workouts.stream().mapToInt(Workout::minDistance).sum();
+		double maxKM = 0.001 * workouts.stream().mapToInt(Workout::maxDistance).sum();
+		String howlong = (minKM != maxKM) ? String.format("%.1f-%.1f", minKM, maxKM) : String.format("%.1f", minKM);
+		return howlong;
 	}
 	
 	public int n() {
@@ -82,11 +87,11 @@ public class Week {
 
 	public void generateExcelRow(Workbook wb, Sheet sheet, Row row) {
 		CellStyle cs = wb.createCellStyle();
-		cs.setWrapText(true);
+		//cs.setWrapText(true);
 		
 		WeekFields weekFields = WeekFields.of(Locale.getDefault()); 
 		int weekNumber = date.get(weekFields.weekOfWeekBasedYear());
-		row.createCell(0).setCellValue("V"+weekNumber);
+		row.createCell(0).setCellValue("V"+weekNumber+"\n"+getHowLong()+" km");
 		
 		int height = 1;
 		for(DayOfWeek dow:DayOfWeek.values()) {

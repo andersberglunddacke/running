@@ -175,7 +175,7 @@ public class BeginnersProgram {
 			week.sun().race();
 		}
 		
-		program.programEnd(LocalDate.of(2018, 5, 13));
+		program.programEnd(LocalDate.of(2018, 7, 7));
 		System.out.println(program.toString());
 		
 		program.asExcel("program.xlsx");
